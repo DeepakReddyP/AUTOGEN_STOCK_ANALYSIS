@@ -6,11 +6,12 @@ from agent_config import AgentConfig
 def orchestrate_agents(user_request, finance_reporting_analyst, technical_analyst, strategy_agent, user):
         tools_list = AgentConfig.get_tools_list()
         try:
-            # Register tools
+            # Register tools (include finance_data_fetch)
             for tool_name, tool_func in [
+                ("finance_data_fetch", FinanceTools.finance_data_fetch),
                 ("technical_analysis_tool", FinanceTools.technical_analysis_tool),
                 ("risk_assessment_tool", FinanceTools.risk_assessment_tool),
-                ("strategy_signal_tool", FinanceTools.strategy_signal_tool)
+                ("strategy_signal_tool", FinanceTools.strategy_signal_tool),
             ]:
                 callers = {
                     "finance_data_fetch": [finance_reporting_analyst],
@@ -18,13 +19,13 @@ def orchestrate_agents(user_request, finance_reporting_analyst, technical_analys
                     "risk_assessment_tool": [strategy_agent],
                     "strategy_signal_tool": [strategy_agent]
                 }
-                for caller in callers[tool_name]:
+                for caller in callers.get(tool_name, []):
                     register_function(
                         tool_func,
                         caller=caller,
                         executor=user,
                         name=tool_name,
-                        description= tools_list[tool_name]["function"]["description"]
+                        description=tools_list.get(tool_name, {}).get("function", {}).get("description", tool_name)
                     )
 
             groupchat = autogen.GroupChat(

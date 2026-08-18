@@ -9,9 +9,9 @@ class AgentConfig:
     def get_llm_config():
         return [
             {
-                "model": "gpt-4.1-nano",
-                "api_key": os.environ.get("OPENAI_API_KEY"),
-                "base_url": os.environ.get("OPENAI_BASE_URL"),
+                "model": "openai/gpt-oss-120b",
+                "api_key": os.environ.get("NVIDIA_API_KEY"),
+                "base_url": "https://integrate.api.nvidia.com/v1",
             }
         ]
     

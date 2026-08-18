@@ -12,8 +12,8 @@ class OpenAIClient:
     """Manages OpenAI client initialization."""
     def __init__(self):
         self.client = OpenAI(
-            api_key=os.environ.get("OPENAI_API_KEY"),
-            base_url=os.environ.get("OPENAI_BASE_URL")
+            api_key=os.environ.get("NVIDIA_API_KEY"),
+            base_url = "https://integrate.api.nvidia.com/v1"
         )
 
 class StockAnalysisApp:
@@ -27,13 +27,13 @@ class StockAnalysisApp:
         with st.sidebar:
             st.header("🔧 Configuration")
             api_key = st.text_input(
-                "OpenAI API Key",
+                "NVIDIA API Key",
                 type="password",
-                value=os.environ.get("OPENAI_API_KEY", ""),
-                help="Enter your OpenAI API key"
+                value=os.environ.get("NVIDIA_API_KEY", ""),
+                help="Enter your NVIDIA API key"
             )
             if api_key:
-                os.environ["OPENAI_API_KEY"] = api_key
+                os.environ["NVIDIA_API_KEY"] = api_key
 
             st.divider()
             st.header("📊 Quick Stock Info")
@@ -57,8 +57,8 @@ class StockAnalysisApp:
             )
 
         if st.button("Run Analysis", disabled=not(user_request)):
-            if not os.environ.get("OPENAI_API_KEY"):
-                st.error("⚠️ Please provide your OpenAI API key in the sidebar")
+            if not os.environ.get("NVIDIA_API_KEY"):
+                st.error("⚠️ Please provide your NVIDIA API key in the sidebar")
             else:
                 with st.spinner("🤖 AI agents are analyzing the stock... This may take a few moments."):
                     agents = self.agents.initialize_agents()

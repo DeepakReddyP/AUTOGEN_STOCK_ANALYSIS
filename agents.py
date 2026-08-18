@@ -1,6 +1,6 @@
 import streamlit as st
 import tempfile
-from autogen.agentchat import AssistantAgent, UserProxyAgent, register_function
+from autogen import AssistantAgent, UserProxyAgent, register_function
 import os
 from agent_config import AgentConfig
 
@@ -9,9 +9,10 @@ class Agents:
     def __init__(self):
         self.config_list = [
             {
-                "model":"gpt-4.1-nano",
-                "api_key": os.environ.get("OPENAI_API_KEY"),
-                "base_url": os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1"),
+                "model": "openai/gpt-oss-120b",
+                "api_key": os.environ.get("NVIDIA_API_KEY"),
+                "base_url": "https://integrate.api.nvidia.com/v1",
+                "price": [0, 0],
             }
         ]
         self.tools_list = AgentConfig.get_tools_list()
